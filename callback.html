@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Norwis TikTok Callback</title>
+  <style>
+    body{font-family:Arial,sans-serif;max-width:900px;margin:40px auto;padding:0 20px;background:#0b1220;color:#eaf2ff}
+    .card{background:#111a2b;border:1px solid #22314d;border-radius:12px;padding:24px}
+    code{display:block;white-space:pre-wrap;word-break:break-word;background:#0a1322;border:1px solid #22314d;border-radius:8px;padding:12px;margin-top:12px}
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>TikTok verbunden</h1>
+    <p>Der OAuth-Rücksprung für Norwis wurde empfangen.</p>
+    <p>Du kannst dieses Fenster offen lassen oder den angezeigten Code in Norwis übernehmen.</p>
+    <code id="out">Lade Callback-Daten ...</code>
+  </div>
+
+  <script>
+    const out = document.getElementById("out");
+    const url = new URL(window.location.href);
+    const code = url.searchParams.get("code");
+    const state = url.searchParams.get("state");
+    const error = url.searchParams.get("error");
+    const errorDescription = url.searchParams.get("error_description");
+
+    const payload = {
+      href: window.location.href,
+      code,
+      state,
+      error,
+      error_description: errorDescription
+    };
+
+    out.textContent = JSON.stringify(payload, null, 2);
+
+    try {
+      localStorage.setItem("norwis_tiktok_oauth_callback", JSON.stringify(payload));
+    } catch (e) {}
+  </script>
+</body>
+</html>
